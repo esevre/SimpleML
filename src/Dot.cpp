@@ -4,19 +4,31 @@
 
 #include "Dot.hpp"
 
-void Dot::draw(float scale) {
+///
+/// \param scale adjust points position on screen
+/// \param color of dot to draw
+void Dot::draw(float scale, ci::Color color) const {
     ci::vec2 draw_pos = pos;
     draw_pos.x = pos.x * scale;
     draw_pos.y = pos.y * scale;
+    ci::gl::color(color);
+    ci::gl::drawSolidEllipse(draw_pos, radius, radius);
+}
+
+void Dot::draw(float scale) const {
     if (isBest) {
+        std::cout << "IS BEST\n";
+        ci::vec2 draw_pos = pos;
+        draw_pos.x = pos.x * scale;
+        draw_pos.y = pos.y * scale;
         ci::gl::color(ci::Color(0, 1, 0));
-        ci::gl::drawSolidEllipse(draw_pos, radius, radius);
+        ci::gl::drawSolidEllipse(draw_pos, 2*radius, 2*radius);
     } else if (dead){
-        ci::gl::color(ci::Color(1, 0, 0));
-        ci::gl::drawSolidEllipse(draw_pos, 2*radius, 2*radius);
+        draw(scale, ci::Color(1, 0, 0));
+    } else if (reachedGoal){
+        draw(scale, ci::Color(0, 0, 1));
     } else {
-        ci::gl::color(ci::Color(0, 0, 0));
-        ci::gl::drawSolidEllipse(draw_pos, 2*radius, 2*radius);
+        draw(scale, ci::Color(0, 0, 0));
     }
 }
 
@@ -26,7 +38,7 @@ void Dot::move() {
         vel += acc;
         limit_length(vel, 5.0);
         pos += vel;
-        if (brain.is_finished()) {
+        if (brain.at_end()) {
             dead = true;
         }
     }
@@ -35,15 +47,14 @@ void Dot::move() {
 void Dot::update() {
     if (!dead && !reachedGoal) {
         move();
-        if (pos.x< 2|| pos.y<2 || pos.x>width-2 || pos.y>height -2) {//if near the edges of the window then kill it
+        // if near the edges of the window then kill it
+        if (pos.x< 2|| pos.y<2 || pos.x>width-2 || pos.y>height -2) {
             dead = true;
             //dist(pos.x, pos.y, goal.x, goal.y)
-        } else if ( length(pos - brain.getGoal()) < 5.0f) { //if reached goal
+        } else if ( length(pos - brain.getGoal()) < 1.1f) {
+            //if reached goal, then mark that
             reachedGoal = true;
         }
-//        else if (pos.x< 600 && pos.y < 310 && pos.x > 0 && pos.y > 300) {//if hit obstacle
-//            dead = true;
-//        }
     }
 }
 

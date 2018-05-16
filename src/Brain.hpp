@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <random>
 
+
+
 class Brain {
 public:
     explicit Brain(size_t size) : directions(size) {
@@ -22,8 +24,9 @@ public:
 
     // copy and move assignment
     Brain &operator=(const Brain &brain);
-    Brain &operator=(Brain &&brain) {
+    Brain &operator=(Brain &&brain) noexcept {
         directions = std::move(brain.directions);
+        step = 0;
         return *this;
     }
 
@@ -43,34 +46,59 @@ public:
         return val;
     }
 
-    bool is_finished() const { return step > directions.size(); }
+    bool at_end() const {
+        return step > directions.size();
+    }
 
     ci::vec2 getGoal() const { return goal; }
+
+    size_t numSteps() const { return step; }
+
+    void mutate() {
+        float mutationRate = 0.01f; // chance that any vector in directions gets changed
+        for (int i = 0; i < directions.size(); ++i) {
+            float rand_num = gen_random_float(0.0, 1.0);
+            if (rand_num < mutationRate) {
+                float theta = gen_random_float(0.0, 2*pi);
+                directions[i] = directionFromAngle(theta);
+            }
+
+        }
+    }
+
+    float gen_random_float(float min, float max) const {
+        // note: static makes this method MUCH faster
+        static std::random_device rd;
+        static std::seed_seq seed {rd(), rd()};
+        static std::mt19937 mt(seed);
+        static std::uniform_real_distribution<float> distribution(min, max);
+        return distribution(mt);
+    }
+
+    void reset() {
+        step = 0;
+    }
+
 protected:
     void randomize() {
         for (auto &direction : directions) {
-            double random_angle = gen_random_double(0.0, 2*pi);   // Random number in 2*pi
+            float random_angle = gen_random_float(0.0, 2 * pi);   // Random number in 2*pi
             direction = directionFromAngle(random_angle);
         }
     }
-    double gen_random_double(double min, double max) {
-        std::random_device rd;
-        std::seed_seq seed {rd(), rd()};
-        std::mt19937 mt(seed);
-        std::uniform_real_distribution<double> distribution(min, max);
-        return distribution(mt);
-    }
-    ci::vec2 directionFromAngle(double angle) const {
-        double x = std::sin(angle);
-        double y = std::cos(angle);
+
+
+    ci::vec2 directionFromAngle(float angle) const {
+        float x = std::sin(angle);
+        float y = std::cos(angle);
         return ci::vec2(x, y);
     }
 
 
 private:
     std::vector<ci::vec2> directions;
-    size_t step = 0; // keep track of the current step number
-    double pi = std::acos(-1);
+    size_t step = 0;  // keep track of the current step number
+    float pi = std::acos(-1);
     ci::vec2 goal = ci::vec2(50, 10);
 };
 

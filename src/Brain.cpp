@@ -8,5 +8,6 @@
 Brain &Brain::operator=(const Brain &brain) {
     directions.resize(brain.size());
     std::copy(brain.cbegin(), brain.cend(), begin());
+    step = 0;
     return *this;
 }
