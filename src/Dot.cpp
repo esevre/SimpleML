@@ -17,7 +17,6 @@ void Dot::draw(float scale, ci::Color color) const {
 
 void Dot::draw(float scale) const {
     if (isBest) {
-        std::cout << "IS BEST\n";
         ci::vec2 draw_pos = pos;
         draw_pos.x = pos.x * scale;
         draw_pos.y = pos.y * scale;
@@ -48,15 +47,32 @@ void Dot::update() {
     if (!dead && !reachedGoal) {
         move();
         // if near the edges of the window then kill it
-        if (pos.x< 2|| pos.y<2 || pos.x>width-2 || pos.y>height -2) {
+        if (pos.x < 2) {
+            pos.x = 0;
             dead = true;
             //dist(pos.x, pos.y, goal.x, goal.y)
-        } else if ( length(pos - brain.getGoal()) < 1.1f) {
-            //if reached goal, then mark that
+        } else if (pos.y<2) {
+            pos.y = 0;
+            dead = true;
+        } else if(pos.x > width - 2) {
+            pos.x = width;
+            dead = true;
+        } else if (pos.y > height - 2) {
+            pos.y = height;
+            dead = true;
+        }else if ( length(pos - brain.getGoal()) < 1.1f) {
+                //if reached goal, then mark that
             reachedGoal = true;
+        } else if ( pos.x < 70 and std::fabs(pos.y - 35) < 3.0) {
+            pos.y = 35; // fix pos to line
+            dead = true;
+        } else if ( pos.x > 30 and std::fabs(pos.y - 70) < 3.0) {
+            pos.y = 70; // fix pos to line
+            dead = true;
         }
     }
 }
+
 
 
 

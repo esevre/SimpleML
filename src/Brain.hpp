@@ -30,13 +30,13 @@ public:
         return *this;
     }
 
-    auto begin() { return directions.begin(); }
-    auto end() { return directions.end(); }
-    auto cbegin() const { return directions.cbegin(); }
-    auto cend() const { return directions.cend(); }
-
-    auto &operator[](size_t i) { return directions[i]; }
-    auto operator[](size_t i) const { return directions[i]; }
+//    auto begin() { return directions.begin(); }
+//    auto end()   { return directions.end(); }
+//    auto cbegin() const { return directions.cbegin(); }
+//    auto cend()   const { return directions.cend(); }
+//
+//    auto &operator[](size_t i)      { return directions[i]; }
+//    auto operator[](size_t i) const { return directions[i]; }
 
     size_t size() const { return directions.size(); }
 
@@ -55,7 +55,7 @@ public:
     size_t numSteps() const { return step; }
 
     void mutate() {
-        float mutationRate = 0.01f; // chance that any vector in directions gets changed
+        float mutationRate = 0.3f; // chance that any vector in directions gets changed
         for (int i = 0; i < directions.size(); ++i) {
             float rand_num = gen_random_float(0.0, 1.0);
             if (rand_num < mutationRate) {

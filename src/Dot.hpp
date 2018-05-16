@@ -51,6 +51,7 @@ public:
             // if the dot didn't reach the goal, then the fitness is basedo n how close it is to the goal
             float distanceToGoal = distance(pos, goal);
             fitness = 1.0 / (distanceToGoal*distanceToGoal);
+            //fitness = 1.0 / ((pos.x - goal.x)*(pos.x - goal.x)+std::pow(pos.y - goal.y, 3));
         }
     }
 

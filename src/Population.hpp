@@ -74,6 +74,14 @@ public:
         }
     }
 
+    void sort_by_fitness() {
+        std::sort(dots.begin(), dots.end(),
+                  [](const Dot &a, const Dot &b)
+                  {
+                      return a.fitness < b.fitness;
+                  });
+    }
+
     void naturalSelection() {
         std::vector<Dot> newDots(dots.size());
         setBestDot();
