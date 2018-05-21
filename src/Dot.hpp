@@ -7,20 +7,20 @@
 
 #include <cmath>
 
-
 #include "esml.hpp"
 #include "Brain.hpp"
 
 
 namespace ESML {
-    
+
     class Dot {
     public:
         Dot() : brain( 1000 ) {}
         explicit Dot(AppPointer app) : parent_app(app), brain(1000) { }
         Dot(NumberType x, NumberType y) : brain(1000), pos(start_pos) { }
         Dot(const Dot &dot) : brain(dot.brain), pos(start_pos) { }
-        explicit Dot(Dot &&dot) : brain(std::move(dot.brain)), pos(start_pos) { }
+        Dot(Dot &&dot) noexcept
+                : brain(std::move(dot.brain)), pos(start_pos) { }
 
         Dot &operator=(const Dot &dot) {
             brain = dot.brain;

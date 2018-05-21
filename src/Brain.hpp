@@ -25,7 +25,7 @@ namespace ESML {
                   step(brain.step),
                   goal(brain.goal)
         {}
-        Brain(Brain &&brain)
+        Brain(Brain &&brain) noexcept
                 : directions(std::move(brain.directions)),
                   step(brain.step),
                   goal(brain.goal)
