@@ -36,7 +36,7 @@ namespace ESML {
             }
         }
 
-        void calculateFitness(const ci::vec2 &goal) {
+        void calculateFitness(const PointType &goal) {
             for(auto &dot : dots) {
                 dot.calculateFitness(goal);
             }
@@ -63,6 +63,7 @@ namespace ESML {
             int maxIndex = 0;
             int i = 0;
             for (auto &dot : dots) {
+                dot.isBest = false;
                 if (dot.fitness > max) {
                     max = dot.fitness;
                     maxIndex = i;
@@ -70,6 +71,7 @@ namespace ESML {
                 ++i;
             }
             bestDot = maxIndex;
+            dots[bestDot].isBest = true;
             if (dots[bestDot].reachedGoal) {
                 minStep = static_cast<int>(dots[bestDot].brain.numSteps());
                 std::cout << "min steps: " << minStep << "\n";
@@ -91,18 +93,24 @@ namespace ESML {
 
 
             for (auto &newDot : newDots) {
-                // select parent based on fitness
+                // select random parent based on fitness
                 newDot = selectParent();
             }
             // the champion lives on
             newDots[0] = dots[bestDot];
             newDots[0].isBest = true;
 
-            dots = newDots;
-            //std::copy(newDots.begin(), newDots.end(), dots.begin());
+
+            //dots = newDots;
+            std::copy(newDots.begin(), newDots.end(), dots.begin());
+
 
             for (auto &dot : dots) {
                 dot.reset();
+            }
+
+            if (dots[0].isBest) {
+                std::cout << "correct best dot marked\n";
             }
 
             std::cout << "generation number: " << gen << "\n";
@@ -124,8 +132,8 @@ namespace ESML {
         }
 
         void mutateDemBabies() {
-            for (auto &dot : dots) {
-                dot.brain.mutate();
+            for (int i = 1; i < dots.size(); ++i) {
+                dots[i].brain.mutate();
             }
         }
 

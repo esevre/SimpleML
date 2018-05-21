@@ -5,7 +5,6 @@
 #ifndef MLDOTS_BRAIN_HPP
 #define MLDOTS_BRAIN_HPP
 
-#include <cinder/gl/gl.h>
 #include <vector>
 #include <algorithm>
 #include <random>
@@ -109,7 +108,7 @@ namespace ESML {
         VectorType directions;
         SizeType step = 0;    // keep track of the current step number
         NumberType pi = static_cast<NumberType >(std::acos(-1));
-        PointType goal = ci::vec2(50, 10);
+        PointType goal = PointType(50, 10);
     };
 
 

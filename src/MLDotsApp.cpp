@@ -41,7 +41,7 @@ void MLDotsApp::setup()
 
 void MLDotsApp::update()
 {
-    test.dots[0].isBest = true;
+    //test.dots[0].isBest = true;
     if (test.allDotsDead()) {
         // genetic algorithm
         test.calculateFitness(goal_dot.pos);

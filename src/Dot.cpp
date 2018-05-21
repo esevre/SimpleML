@@ -4,17 +4,18 @@
 
 #include "Dot.hpp"
 
+
 namespace ESML {
 ///
 /// \param scale adjust points position on screen
 /// \param color of dot to draw
-        void Dot::draw(NumberType scale, ColorType color) const {
+        void Dot::draw(const NumberType scale, const ColorType color) const {
             PointType draw_pos = pos;
             draw_pos.x = pos.x * scale;
             draw_pos.y = pos.y * scale;
 
-            ci::gl::color(color);
-            ci::gl::drawSolidEllipse(draw_pos, radius, radius);
+            SetGlColor(color);
+            DrawSolidCircle(draw_pos, radius);
         }
 
         void Dot::draw(NumberType scale) const {
@@ -23,9 +24,8 @@ namespace ESML {
                 draw_pos.x = pos.x * scale;
                 draw_pos.y = pos.y * scale;
 
-                // todo: make ci::gl::functions generic for any drawing framework defined in esml.hpp
-                ci::gl::color(ColorType(0, 1, 0));
-                ci::gl::drawSolidEllipse(draw_pos, 2*radius, 2*radius);
+                SetGlColorRGB( 0, 1, 0 );
+                DrawSolidCircle(draw_pos, 2*radius);
             } else if (dead){
                 draw(scale, ColorType(1, 0, 0));
             } else if (reachedGoal){

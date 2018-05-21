@@ -7,36 +7,32 @@
 
 #include <cmath>
 
-#include <cinder/gl/gl.h>
-
-#include "cinder/app/App.h"
 
 #include "esml.hpp"
 #include "Brain.hpp"
 
 
 namespace ESML {
+    
     class Dot {
     public:
         Dot() : brain( 1000 ) {}
-        explicit Dot(AppPointer app) : parent_app(app), brain(1000) { setup(); }
-        Dot(NumberType x, NumberType y) : brain(1000), pos(start_pos) {}
-        Dot(const Dot &dot) : brain(dot.brain), pos(start_pos) {}
-        explicit Dot(Dot &&dot) : brain(std::move(dot.brain)), pos(start_pos) {}
+        explicit Dot(AppPointer app) : parent_app(app), brain(1000) { }
+        Dot(NumberType x, NumberType y) : brain(1000), pos(start_pos) { }
+        Dot(const Dot &dot) : brain(dot.brain), pos(start_pos) { }
+        explicit Dot(Dot &&dot) : brain(std::move(dot.brain)), pos(start_pos) { }
 
         Dot &operator=(const Dot &dot) {
             brain = dot.brain;
             pos = start_pos;
-            vel = ci::vec2(0, 0);
-            acc = ci::vec2(0, 0);
+            vel = PointType(0, 0);
+            acc = PointType(0, 0);
 
             return *this;
         }
-        //Dot &operator=(Dot &&dot) = default;
 
         void set_parent(AppPointer parent) {
             parent_app=parent;
-            setup();
         }
 
         void draw(NumberType scale) const;
@@ -63,24 +59,21 @@ namespace ESML {
             return std::sqrt(dx*dx + dy*dy);
         }
 
-        Dot gimmeBaby() const {
-            Dot baby = *this;
-            return baby;
-        }
-
         void reset() {
             brain.reset();
             pos = start_pos;
-            vel = ci::vec2(0,0);
-            acc = ci::vec2(0,0);
+            vel = PointType(0,0);
+            acc = PointType(0,0);
             dead = false;
             reachedGoal = false;
         }
 
     private:
+
         NumberType length(const PointType &vec) const {
             return std::sqrt(vec.x*vec.x + vec.y*vec.y);
         }
+
         void limit_length(PointType &pt, NumberType max_length) {
             NumberType l = length(pt);
             if (l > 5.0){
@@ -91,16 +84,15 @@ namespace ESML {
             }
         }
 
-        void setup() {
-        }
+
 
     public:
         AppPointer parent_app = nullptr;
 
         const PointType start_pos = PointType(50, 90);
         PointType pos;
-        PointType vel = ci::vec2(0, 0);
-        PointType acc = ci::vec2(0, 0);
+        PointType vel = PointType(0, 0);
+        PointType acc = PointType(0, 0);
         Brain brain;
         NumberType radius = 4;
 
@@ -112,8 +104,6 @@ namespace ESML {
 
         NumberType width = 100.0f;
         NumberType height = 100.0f;
-
-
     };
 
 

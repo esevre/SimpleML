@@ -18,6 +18,11 @@ namespace ESML {
     using ItType = VectorType::iterator;
     using ConstItType = VectorType::const_iterator;
 
+    #define SetGlColor( Color ) ci::gl::color(Color)
+    #define SetGlColorRGB( r, g, b ) SetGlColor( ColorType(r,g,b) )
+
+    #define DrawSolidEllipse( Position, RadiusX, RadiusY ) ci::gl::drawSolidEllipse(Position, RadiusX, RadiusY)
+    #define DrawSolidCircle( Position, Radius ) ci::gl::drawSolidEllipse(Position, Radius, Radius)
 
 
 }
