@@ -8,6 +8,7 @@
 
 #include <vector>
 
+using namespace ESML;
 
 class MLDotsApp : public ci::app::App {
 public:

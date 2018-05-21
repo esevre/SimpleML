@@ -4,12 +4,14 @@
 
 #include "Brain.hpp"
 
-
-Brain &Brain::operator=(const Brain &brain) {
-    directions.resize(brain.size());
-    std::copy(brain.cbegin(), brain.cend(), this->begin());
-    step = 0;
-    return *this;
+namespace ESML {
+    Brain &Brain::operator=(const Brain &brain) {
+        directions.resize(brain.size());
+        std::copy(brain.cbegin(), brain.cend(), this->begin());
+        step = 0;
+        return *this;
+    }
 }
+
 
 
