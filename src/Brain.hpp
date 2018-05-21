@@ -74,15 +74,15 @@ public:
     void mutate() {
         NumberType mutationRate = 0.05;  // chance that any vector in directions gets changed
         for (auto &direction : directions) {
-            float rand_num = gen_random_float(0.0, 1.0);
+            NumberType rand_num = gen_random_number(0.0, 1.0);
             if (rand_num < mutationRate) {
-                float theta = gen_random_float(0.0, 2*pi);
+                NumberType theta = gen_random_number(0.0, 2 * pi);
                 direction = directionFromAngle(theta);
             }
         }
     }
 
-    NumberType gen_random_float(NumberType min, NumberType max)
+    NumberType gen_random_number(NumberType min, NumberType max)
     {
         // note: static makes this method MUCH faster
         static std::random_device rd;
@@ -99,15 +99,15 @@ public:
 protected:
     void randomize() {
         for (auto &direction : directions) {
-            NumberType random_angle = gen_random_float(0.0, 2 * pi);   // Random number in 2*pi
+            NumberType random_angle = gen_random_number(0.0, 2 * pi);   // Random number in 2*pi
             direction = directionFromAngle(random_angle);
         }
     }
 
 
-    ci::vec2 directionFromAngle(NumberType angle) const {
-        NumberType x = std::sin(angle);
-        NumberType y = std::cos(angle);
+    PointType directionFromAngle(NumberType angle) const {
+        NumberType x = static_cast<NumberType>(std::sin(angle));
+        NumberType y = static_cast<NumberType>(std::cos(angle));
         return PointType(x, y);
     }
 

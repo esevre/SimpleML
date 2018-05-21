@@ -56,15 +56,15 @@ public:
             fitness = 1.0f/16.0f + 10000.0f / (NumberType)(brain.numSteps()*brain.numSteps());
         } else {
             // if the dot didn't reach the goal, then the fitness is basedo n how close it is to the goal
-            float distanceToGoal = distance(pos, goal);
+            NumberType distanceToGoal = distance(pos, goal);
             fitness = 1.0f / (distanceToGoal*distanceToGoal);
             //fitness = 1.0 / ((pos.x - goal.x)*(pos.x - goal.x)+std::pow(pos.y - goal.y, 3));
         }
     }
 
-    static float distance(const PointType &a, const PointType &b) {
-        float dx = a.x - b.x;
-        float dy = a.y - b.y;
+    static NumberType distance(const PointType &a, const PointType &b) {
+        NumberType dx = a.x - b.x;
+        NumberType dy = a.y - b.y;
         return std::sqrt(dx*dx + dy*dy);
     }
 
