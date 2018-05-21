@@ -16,11 +16,16 @@
 
 class Dot {
 public:
+    using SizeType = size_t;
+    using PointType = ci::vec2;
+    using NumberType = float;
+    using VectorType = std::vector<PointType>;
+
     Dot() : brain( 1000 ) {}
-    Dot(ci::app::App *app) : parent_app(app), brain(1000) { setup(); }
-    Dot(float x, float y) : brain(1000), pos(start_pos) {}
+    explicit Dot(ci::app::App *app) : parent_app(app), brain(1000) { setup(); }
+    Dot(NumberType x, NumberType y) : brain(1000), pos(start_pos) {}
     Dot(const Dot &dot) : brain(dot.brain), pos(start_pos) {}
-    Dot(Dot &&dot) : brain(std::move(dot.brain)), pos(start_pos) {}
+    explicit Dot(Dot &&dot) : brain(std::move(dot.brain)), pos(start_pos) {}
 
     Dot &operator=(const Dot &dot) {
         brain = dot.brain;

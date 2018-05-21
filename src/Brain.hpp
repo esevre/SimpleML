@@ -14,13 +14,30 @@
 
 class Brain {
 public:
+    using SizeType = size_t;
+    using PointType = ci::vec2;
+    using NumberType = float;
+    using VectorType = std::vector<PointType>;
+
+    using ItType = std::vector<PointType>::iterator;
+    using ConstItType = std::vector<PointType>::const_iterator;
+
+
     explicit Brain(size_t size) : directions(size) {
         randomize();
     }
 
     // copy and move constructor
-    Brain(const Brain &brain) : directions(brain.directions) {}
-    Brain(Brain &&brain) : directions(std::move(brain.directions)) {}
+    Brain(const Brain &brain)
+            : directions(brain.directions),
+              step(brain.step),
+              goal(brain.goal)
+    {}
+    Brain(Brain &&brain)
+            : directions(std::move(brain.directions)),
+              step(brain.step),
+              goal(brain.goal)
+    {}
 
     // copy and move assignment
     Brain &operator=(const Brain &brain);
@@ -30,48 +47,48 @@ public:
         return *this;
     }
 
-//    auto begin() { return directions.begin(); }
-//    auto end()   { return directions.end(); }
-//    auto cbegin() const { return directions.cbegin(); }
-//    auto cend()   const { return directions.cend(); }
-//
-//    auto &operator[](size_t i)      { return directions[i]; }
-//    auto operator[](size_t i) const { return directions[i]; }
+    ItType begin() { return directions.begin(); }
+    ItType end()   { return directions.end(); }
+    ConstItType cbegin() const { return directions.cbegin(); }
+    ConstItType cend()   const { return directions.cend(); }
 
-    size_t size() const { return directions.size(); }
+    PointType &operator[](size_t i)      { return directions[i]; }
+    PointType operator[](size_t i) const { return directions[i]; }
 
-    ci::vec2 getNextDirection() {
-        ci::vec2 val = directions[step];
+    SizeType size() const { return directions.size(); }
+
+    PointType getNextDirection() {
+        PointType val = directions[step];
         ++step;
         return val;
     }
 
     bool at_end() const {
-        return step > directions.size();
+        return step >= directions.size();
     }
 
-    ci::vec2 getGoal() const { return goal; }
+    PointType getGoal() const { return goal; }
 
-    size_t numSteps() const { return step; }
+    SizeType numSteps() const { return step; }
 
     void mutate() {
-        float mutationRate = 0.3f; // chance that any vector in directions gets changed
-        for (int i = 0; i < directions.size(); ++i) {
+        NumberType mutationRate = 0.05;  // chance that any vector in directions gets changed
+        for (auto &direction : directions) {
             float rand_num = gen_random_float(0.0, 1.0);
             if (rand_num < mutationRate) {
                 float theta = gen_random_float(0.0, 2*pi);
-                directions[i] = directionFromAngle(theta);
+                direction = directionFromAngle(theta);
             }
-
         }
     }
 
-    float gen_random_float(float min, float max) const {
+    NumberType gen_random_float(NumberType min, NumberType max)
+    {
         // note: static makes this method MUCH faster
         static std::random_device rd;
-        static std::seed_seq seed {rd(), rd()};
+        static std::seed_seq seed { rd(), rd() };
         static std::mt19937 mt(seed);
-        static std::uniform_real_distribution<float> distribution(min, max);
+        static std::uniform_real_distribution<NumberType> distribution(min, max);
         return distribution(mt);
     }
 
@@ -82,25 +99,29 @@ public:
 protected:
     void randomize() {
         for (auto &direction : directions) {
-            float random_angle = gen_random_float(0.0, 2 * pi);   // Random number in 2*pi
+            NumberType random_angle = gen_random_float(0.0, 2 * pi);   // Random number in 2*pi
             direction = directionFromAngle(random_angle);
         }
     }
 
 
-    ci::vec2 directionFromAngle(float angle) const {
-        float x = std::sin(angle);
-        float y = std::cos(angle);
-        return ci::vec2(x, y);
+    ci::vec2 directionFromAngle(NumberType angle) const {
+        NumberType x = std::sin(angle);
+        NumberType y = std::cos(angle);
+        return PointType(x, y);
     }
 
 
 private:
-    std::vector<ci::vec2> directions;
-    size_t step = 0;  // keep track of the current step number
-    float pi = std::acos(-1);
-    ci::vec2 goal = ci::vec2(50, 10);
+    VectorType directions;
+    SizeType step = 0;    // keep track of the current step number
+    NumberType pi = static_cast<NumberType >(std::acos(-1));
+    PointType goal = ci::vec2(50, 10);
 };
+
+
+
+
 
 
 #endif //MLDOTS_BRAIN_HPP
