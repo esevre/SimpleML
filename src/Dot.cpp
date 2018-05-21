@@ -7,27 +7,29 @@
 ///
 /// \param scale adjust points position on screen
 /// \param color of dot to draw
-void Dot::draw(float scale, ci::Color color) const {
-    ci::vec2 draw_pos = pos;
+void Dot::draw(Dot::NumberType scale, Dot::ColorType color) const {
+    Dot::PointType draw_pos = pos;
     draw_pos.x = pos.x * scale;
     draw_pos.y = pos.y * scale;
+
     ci::gl::color(color);
     ci::gl::drawSolidEllipse(draw_pos, radius, radius);
 }
 
-void Dot::draw(float scale) const {
+void Dot::draw(Dot::NumberType scale) const {
     if (isBest) {
-        ci::vec2 draw_pos = pos;
+        Dot::PointType draw_pos = pos;
         draw_pos.x = pos.x * scale;
         draw_pos.y = pos.y * scale;
-        ci::gl::color(ci::Color(0, 1, 0));
+
+        ci::gl::color(ColorType(0, 1, 0));
         ci::gl::drawSolidEllipse(draw_pos, 2*radius, 2*radius);
     } else if (dead){
-        draw(scale, ci::Color(1, 0, 0));
+        draw(scale, Dot::ColorType(1, 0, 0));
     } else if (reachedGoal){
-        draw(scale, ci::Color(0, 0, 1));
+        draw(scale, Dot::ColorType(0, 0, 1));
     } else {
-        draw(scale, ci::Color(0, 0, 0));
+        draw(scale, Dot::ColorType(0, 0, 0));
     }
 }
 
@@ -63,10 +65,10 @@ void Dot::update() {
         }else if ( length(pos - brain.getGoal()) < 1.1f) {
                 //if reached goal, then mark that
             reachedGoal = true;
-        } else if ( pos.x < 70 and std::fabs(pos.y - 35) < 3.0) {
+        } else if ( pos.x < 70.0f and std::fabs(pos.y - 35.0f) < 3.0f) {
             pos.y = 35; // fix pos to line
             dead = true;
-        } else if ( pos.x > 30 and std::fabs(pos.y - 70) < 3.0) {
+        } else if ( pos.x > 30.0f and std::fabs(pos.y - 70.0f) < 3.0f) {
             pos.y = 70; // fix pos to line
             dead = true;
         }
