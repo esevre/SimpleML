@@ -67,11 +67,12 @@ namespace ESML {
             }else if ( length(pos - brain.getGoal()) < 1.1f) {
                 //if reached goal, then mark that
                 reachedGoal = true;
+                dead = true;
             } else if ( pos.x < 70.0f and std::fabs(pos.y - 35.0f) < 3.0f) {
-                pos.y = 35; // fix pos to line
+                pos.y = 35;  // fix pos to line
                 dead = true;
             } else if ( pos.x > 30.0f and std::fabs(pos.y - 70.0f) < 3.0f) {
-                pos.y = 70; // fix pos to line
+                pos.y = 70;  // fix pos to line
                 dead = true;
             }
         }

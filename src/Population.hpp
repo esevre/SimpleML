@@ -51,6 +51,15 @@ namespace ESML {
             return true;
         }
 
+        bool didReachGoal() const {
+            for (auto &dot : dots) {
+                if (dot.reachedGoal) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void calculateFitnessSum() {
             fitnessSum = 0.0f;
             for (auto &dot : dots) {
@@ -131,13 +140,13 @@ namespace ESML {
             return dots[dots.size()-1];
         }
 
-        void mutateDemBabies() {
+        void mutateDemBabies(const NumberType mutationRate = 0.01) {
             for (int i = 1; i < dots.size(); ++i) {
-                dots[i].brain.mutate();
+                dots[i].brain.mutate(mutationRate);
             }
         }
 
-        float gen_random_float(float min, float max) const {
+        NumberType gen_random_float(NumberType min, NumberType max) const {
             // note: static makes this method MUCH faster
             static std::random_device rd;
             static std::seed_seq seed {rd(), rd()};

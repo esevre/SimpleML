@@ -13,6 +13,7 @@
 
 namespace ESML {
 
+
     class Brain {
     public:
         explicit Brain(size_t size) : directions(size) {
@@ -63,8 +64,7 @@ namespace ESML {
 
         SizeType numSteps() const { return step; }
 
-        void mutate() {
-            NumberType mutationRate = 0.05;  // chance that any vector in directions gets changed
+        void mutate(NumberType mutationRate = 0.01) {
             for (auto &direction : directions) {
                 NumberType rand_num = gen_random_number(0.0, 1.0);
                 if (rand_num < mutationRate) {
