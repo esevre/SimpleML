@@ -37,6 +37,8 @@ private:
 
 void MLDotsApp::setup()
 {
+    this->setWindowPos(10, 10);
+    this->setWindowSize(350, 300);
     goal_dot.pos = ci::vec2(50, 10);
 }
 

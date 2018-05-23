@@ -24,7 +24,7 @@ namespace ESML {
                 dot.draw(scale_factor);
             }
         }
-        void update(const float &scale = 1.0) {
+        void update(const NumberType &scale = 1.0) {
             scale_factor = scale;
             for (auto &dot : dots) {
                 if (dot.brain.numSteps() > minStep) {
@@ -68,7 +68,7 @@ namespace ESML {
         }
 
         void setBestDot() {
-            float max = 0;
+            NumberType max = 0;
             int maxIndex = 0;
             int i = 0;
             for (auto &dot : dots) {
@@ -127,8 +127,8 @@ namespace ESML {
         }
 
         Dot selectParent(){
-            float rand_num = gen_random_number(0.0f, fitnessSum);
-            float running_sum = 0.0;
+            NumberType rand_num = gen_random_number(0.0f, fitnessSum);
+            NumberType running_sum = 0.0;
 
             for (const auto &dot : dots) {
                 running_sum += dot.fitness;
@@ -151,19 +151,19 @@ namespace ESML {
             static std::random_device rd;
             static std::seed_seq seed {rd(), rd()};
             static std::mt19937 mt(seed);
-            static std::uniform_real_distribution<float> distribution(min, max);
+            static std::uniform_real_distribution<NumberType> distribution(min, max);
             return distribution(mt);
         }
 
     public:
         std::vector<Dot> dots;
-        float fitnessSum = 0.0f;
+        NumberType fitnessSum = 0.0f;
         int gen = 1;
 
         int bestDot = 0;
         int minStep = 1000;
 
-        float scale_factor = 1.0;
+        NumberType scale_factor = 1.0;
 
     };
 
