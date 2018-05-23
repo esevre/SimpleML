@@ -127,7 +127,7 @@ namespace ESML {
         }
 
         Dot selectParent(){
-            float rand_num = gen_random_float(0.0f, fitnessSum);
+            float rand_num = gen_random_number(0.0f, fitnessSum);
             float running_sum = 0.0;
 
             for (const auto &dot : dots) {
@@ -146,7 +146,7 @@ namespace ESML {
             }
         }
 
-        NumberType gen_random_float(NumberType min, NumberType max) {
+        NumberType gen_random_number(NumberType min, NumberType max) {
             // note: static makes this method MUCH faster
             static std::random_device rd;
             static std::seed_seq seed {rd(), rd()};
