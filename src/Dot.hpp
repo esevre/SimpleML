@@ -16,7 +16,7 @@ namespace ESML {
     class Dot {
     public:
         Dot() : brain( 1000 ) {}
-        explicit Dot(AppPointer app) : parent_app(app), brain(1000) { }
+        explicit Dot(AppPointer app) : brain(1000) { }
         Dot(NumberType x, NumberType y) : brain(1000), pos(start_pos) { }
         Dot(const Dot &dot) : brain(dot.brain), pos(start_pos) { }
         Dot(Dot &&dot) noexcept
@@ -29,10 +29,6 @@ namespace ESML {
             acc = PointType(0, 0);
 
             return *this;
-        }
-
-        void set_parent(AppPointer parent) {
-            parent_app=parent;
         }
 
         void draw(NumberType scale) const;
@@ -70,13 +66,13 @@ namespace ESML {
 
     private:
 
-        NumberType length(const PointType &vec) const {
-            return std::sqrt(vec.x*vec.x + vec.y*vec.y);
+        static constexpr NumberType length(const PointType &vec) {
+            return sqrt(vec.x*vec.x + vec.y*vec.y);
         }
 
         void limit_length(PointType &pt, NumberType max_length) {
             NumberType l = length(pt);
-            if (l > 5.0){
+            if (l > max_length){
                 auto x = pt.x / l;
                 auto y = pt.y / l;
                 pt.x = x * max_length;
@@ -87,8 +83,6 @@ namespace ESML {
 
 
     public:
-        AppPointer parent_app = nullptr;
-
         const PointType start_pos = PointType(50, 90);
         PointType pos;
         PointType vel = PointType(0, 0);

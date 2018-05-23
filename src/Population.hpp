@@ -146,7 +146,7 @@ namespace ESML {
             }
         }
 
-        NumberType gen_random_float(NumberType min, NumberType max) const {
+        NumberType gen_random_float(NumberType min, NumberType max) {
             // note: static makes this method MUCH faster
             static std::random_device rd;
             static std::seed_seq seed {rd(), rd()};

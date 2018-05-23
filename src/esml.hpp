@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <limits>
+
 #include "cinder/gl/gl.h"
 #include "cinder/app/App.h"
 
@@ -23,6 +25,30 @@ namespace ESML {
 
     #define DrawSolidEllipse( Position, RadiusX, RadiusY ) ci::gl::drawSolidEllipse(Position, RadiusX, RadiusY)
     #define DrawSolidCircle( Position, Radius ) ci::gl::drawSolidEllipse(Position, Radius, Radius)
+
+
+
+    /*
+     * Constexpr version of the square root
+     * Return value:
+     *	- For a finite and non-negative value of "x", returns an approximation for the square root of "x"
+     *   - Otherwise, returns NaN
+     */
+    namespace Detail
+    {
+        NumberType constexpr sqrtNewtonRaphson(NumberType x, NumberType curr, NumberType prev)
+        {
+            return curr == prev
+                   ? curr
+                   : sqrtNewtonRaphson(x, 0.5f * (curr + x / curr), curr);
+        }
+    }
+    NumberType constexpr sqrt(NumberType x)
+    {
+        return x >= 0 && x < std::numeric_limits<NumberType>::infinity()
+               ? Detail::sqrtNewtonRaphson(x, x, 0)
+               : std::numeric_limits<NumberType>::quiet_NaN();
+    }
 
 
 }

@@ -19,10 +19,10 @@ public:
 
 private:
     Dot goal_dot;
-    Population test = Population(2000);
+    Population test = Population(1000);
     float scale_factor = 1.0f;
     float mutationRate = 0.3f;
-    float mutationFactor = 0.9f;
+    float mutationFactor = 0.90;
     float minMutationRate = 0.0001f;
 
     ci::vec2 line_1_a = ci::vec2(  0, 35);
@@ -51,13 +51,10 @@ void MLDotsApp::update()
         test.calculateFitness(goal_dot.pos);
         test.naturalSelection();
         if (didReachGoal) {
-            std::cout << "updating mutation rate : ";
             if (mutationRate > minMutationRate) {
                 mutationRate *= mutationFactor;
-                std::cout << "new rate: " << mutationRate << "\n";
             } else {
                 mutationRate = minMutationRate;
-                std::cout << "min reached: " << mutationRate << "\n";
             }
         }
         std::cout << "mutation rate: " << mutationRate << "\n";

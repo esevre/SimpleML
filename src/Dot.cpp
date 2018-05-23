@@ -9,6 +9,7 @@ namespace ESML {
     ///
     /// \param scale adjust points position on screen
     /// \param color of dot to draw
+    //  Method to draw the dot onto the screen.
     void Dot::draw(const NumberType scale, const ColorType color) const {
         PointType draw_pos = pos;
         draw_pos.x = pos.x * scale;
@@ -19,16 +20,16 @@ namespace ESML {
     }
 
     void Dot::draw(NumberType scale) const {
-        if (isBest) {
+        if ( isBest ) {
             PointType draw_pos = pos;
             draw_pos.x = pos.x * scale;
             draw_pos.y = pos.y * scale;
 
             SetGlColorRGB( 0, 1, 0 );
             DrawSolidCircle(draw_pos, 2*radius);
-        } else if (dead){
+        } else if ( dead ){
             draw(scale, ColorType(1, 0, 0));
-        } else if (reachedGoal){
+        } else if ( reachedGoal ){
             draw(scale, ColorType(0, 0, 1));
         } else {
             draw(scale, ColorType(0, 0, 0));
@@ -36,12 +37,12 @@ namespace ESML {
     }
 
     void Dot::move() {
-        if (!dead) {
+        if ( !dead ) {
             acc = brain.getNextDirection();
             vel += acc;
             limit_length(vel, 5.0);
             pos += vel;
-            if (brain.at_end()) {
+            if ( brain.at_end() ) {
                 dead = true;
             }
         }
@@ -51,17 +52,17 @@ namespace ESML {
         if (!dead && !reachedGoal) {
             move();
             // if near the edges of the window then kill it
-            if (pos.x < 2) {
+            if ( pos.x < 2 ) {
                 pos.x = 0;
                 dead = true;
                 //dist(pos.x, pos.y, goal.x, goal.y)
-            } else if (pos.y<2) {
+            } else if ( pos.y < 2 ) {
                 pos.y = 0;
                 dead = true;
-            } else if(pos.x > width - 2) {
+            } else if( pos.x > width - 2 ) {
                 pos.x = width;
                 dead = true;
-            } else if (pos.y > height - 2) {
+            } else if ( pos.y > height - 2 ) {
                 pos.y = height;
                 dead = true;
             }else if ( length(pos - brain.getGoal()) < 1.1f) {
